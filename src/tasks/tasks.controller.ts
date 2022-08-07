@@ -9,6 +9,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { Logger } from '@nestjs/common'
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { Role } from 'src/auth/roles/roles.enum';
 
 
 @Controller('tasks')
@@ -27,6 +29,7 @@ export class TasksController {
     }
 
     @Post()
+    @Roles(Role.USER)
     createTask(
         @Body() createTaskDto: CreateTaskDto,
         @GetUser() user: User,
@@ -35,15 +38,18 @@ export class TasksController {
         return this.taskService.createTask(createTaskDto, user);
     }
 
+
     @Get('/:id')
     async getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
         return this.taskService.getTaskById(id, user);
     }
 
+
     @Delete('/:id')
     async deleteTaskById(@Param('id') id: string, @GetUser() user: User): Promise<void> {
         this.taskService.deleteTaskById(id, user);
     }
+
 
     @Patch('/:id/status')
     async updateTaskStatus(

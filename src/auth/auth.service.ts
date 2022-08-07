@@ -6,6 +6,7 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { Role } from './roles/roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -22,11 +23,15 @@ export class AuthService {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user: User = this.usersRepository.create({ username, password: hashedPassword});
+        const role = Role.USER;
+        const user: User = this.usersRepository.create({ username, password: hashedPassword, role: role });
+        console.log(user)
 
         try {
             await this.usersRepository.save(user);
         } catch (error) {
+            console.log(error)
+            console.log(error.code)
             if (error.code === '23505') { // Duplicate Username
                 throw new ConflictException('Username already exists');
             } else {
