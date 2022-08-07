@@ -7,7 +7,7 @@ import { Task } from './task.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/auth/user.entity';
 import { Logger } from '@nestjs/common'
-// import { ConfigService } from '@nestjs/config';  //*** FOR ENV VARIABLES 
+//import { ConfigService } from '@nestjs/config';  //*** FOR ENV VARIABLES 
 
 @Injectable()
 export class TasksService {
@@ -16,9 +16,9 @@ export class TasksService {
     constructor(
         @InjectRepository(Task)
         private tasksRepository: Repository<Task>,
-        // private configService: ConfigService      //*** FOR ENV VARIABLES 
+        //private configService: ConfigService      //*** FOR ENV VARIABLES 
     ) {
-        // console.log( configService.get('DATABASE_NAME') );   //*** FOR ENV VARIABLES 
+        //console.log( configService.get('STAGE') );   //*** FOR ENV VARIABLES 
     }
 
     async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {

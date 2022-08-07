@@ -19,7 +19,12 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configServise: ConfigService) => {
+        const isProduction = configServise.get('STAGE') === 'prod';
         return {
+          ssl: isProduction,
+          extra: {
+            ssl: isProduction ? { rejectUnauthorized: false } : null,
+          },
           type: 'postgres',
           port: configServise.get('DB_PORT'),
           host: configServise.get('DB_HOST'),
