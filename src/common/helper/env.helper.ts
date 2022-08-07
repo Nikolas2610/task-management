@@ -10,6 +10,6 @@ export function getEnvPath(dest: string): string {
   if (!existsSync(filePath)) {
     filePath = fallback;
   }
-
+  console.log('PATH: ' + filePath)
   return filePath;
 }
