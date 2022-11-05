@@ -11,10 +11,11 @@ import { User } from 'src/auth/user.entity';
 import { Logger } from '@nestjs/common'
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { Role } from 'src/auth/roles/roles.enum';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
 
 
 @Controller('tasks')
-@UseGuards(AuthGuard())
+
 export class TasksController {
     private logger = new Logger('TasksController');
 
@@ -29,7 +30,8 @@ export class TasksController {
     }
 
     @Post()
-    @Roles(Role.USER)
+    @Roles(Role.ADMIN)
+    // @UseGuards(RolesGuard)
     createTask(
         @Body() createTaskDto: CreateTaskDto,
         @GetUser() user: User,
